@@ -27,7 +27,7 @@ function getNestedValue(obj: Record<string, unknown>, keys: string[]): string {
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>('en')
+  const [locale, setLocaleState] = useState<Locale>('ar')
 
   useEffect(() => {
     const saved = sessionStorage.getItem('tmf_locale') as Locale | null

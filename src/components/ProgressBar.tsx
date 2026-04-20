@@ -9,22 +9,23 @@ interface ProgressBarProps {
 
 export function ProgressBar({ current, total }: ProgressBarProps) {
   const { format } = useLanguage()
+  const pct = Math.round((current / total) * 100)
 
   return (
-    <div className="w-full space-y-2">
-      <div className="flex gap-2">
-        {Array.from({ length: total }, (_, i) => (
-          <div
-            key={i}
-            className={`h-1 flex-1 rounded-full transition-all duration-500 ${
-              i < current ? 'bg-gold-500' : 'bg-white/15'
-            }`}
-          />
-        ))}
+    <div className="w-full space-y-3">
+      {/* Label */}
+      <div className="flex items-center justify-between text-xs text-white/40">
+        <span>{format('progress.step', { current, total })}</span>
+        <span>{pct}%</span>
       </div>
-      <p className="text-xs text-white/50 text-end">
-        {format('progress.step', { current, total })}
-      </p>
+
+      {/* Track */}
+      <div className="h-1 w-full bg-white/8 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-gold-600 to-gold-400 rounded-full transition-all duration-500 ease-out"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
     </div>
   )
 }

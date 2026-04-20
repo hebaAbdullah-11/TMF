@@ -1,58 +1,74 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { Button } from './ui/Button'
 
 export function LandingHero() {
   const { t, isRTL } = useLanguage()
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight
 
   return (
-    <div className="relative flex-1 flex flex-col items-center justify-center px-6 py-24 text-center min-h-screen overflow-hidden">
-      {/* Background gradient */}
+    <div className="relative flex flex-col items-center justify-center min-h-screen px-6 text-center overflow-hidden">
+
+      {/* ── Ambient background glows ─────────────────────── */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(79,70,229,0.18) 0%, rgba(15,23,42,0) 70%)',
+          background: [
+            'radial-gradient(ellipse 70% 50% at 50% 0%,   rgba(99,102,241,0.13) 0%, transparent 70%)',
+            'radial-gradient(ellipse 50% 40% at 80% 80%,  rgba(245,158,11,0.07) 0%, transparent 60%)',
+            'radial-gradient(ellipse 40% 30% at 20% 100%, rgba(99,102,241,0.06) 0%, transparent 60%)',
+          ].join(', '),
         }}
       />
 
-      {/* Gold accent line */}
-      <div className="relative z-10 w-12 h-0.5 bg-gold-500 rounded-full mb-8" />
+      {/* ── Content ──────────────────────────────────────── */}
+      <div className="relative z-10 flex flex-col items-center gap-7 max-w-xl w-full animate-fade-up">
 
-      <div className="relative z-10 space-y-6 max-w-2xl">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
+        {/* Badge */}
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium bg-gold-500/10 border border-gold-500/25 text-gold-400 tracking-wide">
+          <span className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+          {isRTL ? 'مدعوم بالذكاء الاصطناعي' : 'Powered by AI'}
+        </span>
+
+        {/* Title */}
+        <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight">
           {t('site.title')}
         </h1>
 
-        <div className="space-y-1">
-          <p className="text-lg sm:text-xl font-medium text-gold-400">
-            {t('site.taglineMain')}
-          </p>
-          <p className="text-lg sm:text-xl font-medium text-white/70">
-            {t('site.taglineSub')}
-          </p>
-        </div>
+        {/* Tagline */}
+        <p className="text-lg sm:text-xl font-medium text-white/75 leading-relaxed max-w-md">
+          <span className="text-gold-400">{t('site.taglineMain')}</span>
+          {' '}
+          {t('site.taglineSub')}
+        </p>
 
-        <div className="w-16 h-px bg-gold-500/30 mx-auto" />
+        {/* Divider */}
+        <div className="w-10 h-px bg-gold-500/40" />
 
-        <p className="text-base sm:text-lg text-white/55 leading-relaxed max-w-lg mx-auto">
+        {/* Description */}
+        <p className="text-sm sm:text-base text-white/50 leading-loose max-w-sm">
           {t('site.description')}
         </p>
 
-        <div className="pt-4">
-          <Link href="/questions">
-            <Button size="lg" variant="primary" className="gap-2 text-navy-900 font-semibold">
-              {t('site.cta')}
-              <ArrowRight size={20} className={isRTL ? 'rotate-180' : ''} />
-            </Button>
-          </Link>
-        </div>
+        {/* CTA */}
+        <Link href="/questions" className="mt-2">
+          <Button size="lg" variant="primary">
+            {t('site.cta')}
+            <ArrowIcon size={18} />
+          </Button>
+        </Link>
       </div>
 
-      {/* Decorative bottom gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none bg-gradient-to-t from-navy-900 to-transparent" />
+      {/* ── Bottom fade ───────────────────────────────────── */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 inset-x-0 h-28"
+        style={{ background: 'linear-gradient(to top, #0b1120, transparent)' }}
+      />
     </div>
   )
 }

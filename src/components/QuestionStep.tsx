@@ -33,19 +33,18 @@ export function QuestionStep({
   const { t, isRTL } = useLanguage()
   const isValid = value.trim().length >= 10
 
-  const handleNext = () => {
-    if (isValid) onNext()
-  }
-
   const BackIcon = isRTL ? ChevronRight : ChevronLeft
   const NextIcon = isRTL ? ChevronLeft : ChevronRight
 
   return (
-    <div className="animate-fade-in w-full max-w-2xl mx-auto px-4 py-8 space-y-8">
+    <div className="animate-fade-up w-full max-w-xl mx-auto px-4 py-10 space-y-8">
+
       <ProgressBar current={stepNumber} total={totalSteps} />
 
-      <div className="space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-snug">
+      {/* Question card */}
+      <div className="glass rounded-2xl p-6 sm:p-8 space-y-6 shadow-card">
+
+        <h2 className="text-xl sm:text-2xl font-semibold text-white leading-snug">
           {question}
         </h2>
 
@@ -55,46 +54,57 @@ export function QuestionStep({
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
             rows={5}
-            className="w-full bg-navy-800 border border-white/15 hover:border-white/30 focus:border-gold-500 focus:outline-none rounded-xl px-5 py-4 text-white placeholder-white/30 resize-none transition-colors duration-200 text-base leading-relaxed"
+            className="
+              w-full min-h-[130px] resize-none
+              bg-white/4 border border-white/10
+              hover:border-white/20 focus:border-gold-500/60
+              focus:outline-none focus:ring-0
+              rounded-xl px-4 py-3.5
+              text-white placeholder-white/25
+              text-base leading-relaxed
+              transition-colors duration-200
+            "
           />
+
+          {/* Validation hints */}
           {error && (
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-red-400/90 text-sm ps-1">{error}</p>
           )}
-          {value.trim().length > 0 && value.trim().length < 10 && (
-            <p className="text-white/40 text-sm">{t('errors.minLength')}</p>
+          {!error && value.trim().length > 0 && value.trim().length < 10 && (
+            <p className="text-white/35 text-sm ps-1">{t('errors.minLength')}</p>
           )}
         </div>
-      </div>
 
-      <div className="flex items-center justify-between gap-4">
-        {onBack ? (
-          <Button variant="ghost" onClick={onBack} className="gap-1">
-            <BackIcon size={18} />
-            {t('nav.back')}
-          </Button>
-        ) : (
-          <div />
-        )}
-
-        <Button
-          variant="primary"
-          onClick={handleNext}
-          disabled={!isValid}
-          size={isLast ? 'lg' : 'md'}
-          className={isLast ? 'gap-2' : ''}
-        >
-          {isLast ? (
-            <>
-              <Sparkles size={18} />
-              {t('nav.generate')}
-            </>
+        {/* Navigation */}
+        <div className="flex items-center justify-between gap-3 pt-1">
+          {onBack ? (
+            <Button variant="ghost" size="sm" onClick={onBack}>
+              <BackIcon size={16} />
+              {t('nav.back')}
+            </Button>
           ) : (
-            <>
-              {t('nav.next')}
-              <NextIcon size={18} />
-            </>
+            <div />
           )}
-        </Button>
+
+          <Button
+            variant="primary"
+            size={isLast ? 'lg' : 'md'}
+            onClick={() => isValid && onNext()}
+            disabled={!isValid}
+          >
+            {isLast ? (
+              <>
+                <Sparkles size={16} />
+                {t('nav.generate')}
+              </>
+            ) : (
+              <>
+                {t('nav.next')}
+                <NextIcon size={16} />
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   )

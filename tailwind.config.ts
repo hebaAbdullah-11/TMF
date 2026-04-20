@@ -10,41 +10,59 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy: {
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#060d1e',
+        // Main dark background — warm deep slate-blue
+        bg: {
+          base:    '#0b1120',
+          surface: '#111827',
+          raised:  '#182034',
+          border:  'rgba(255,255,255,0.08)',
         },
+        // Gold/amber accent
         gold: {
+          300: '#fcd34d',
           400: '#fbbf24',
           500: '#f59e0b',
           600: '#d97706',
         },
+        // Soft indigo tint for gradients
         indigo: {
-          950: '#1e1b4b',
+          900: '#1e1b4b',
+          950: '#0f0d2e',
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        arabic: ['var(--font-tajawal)', 'system-ui', 'sans-serif'],
+        sans:    ['var(--font-tajawal)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
+        english: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'display': ['3.25rem', { lineHeight: '1.15', fontWeight: '700' }],
       },
       lineHeight: {
-        body: '1.75',
+        'relaxed-ar': '1.9',
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.25rem',
       },
       animation: {
-        'fade-in': 'fadeIn 0.4s ease-in-out',
-        'bounce-dot': 'bounceDot 1.2s infinite ease-in-out',
+        'fade-in':    'fadeIn 0.45s ease-out both',
+        'fade-up':    'fadeUp 0.5s ease-out both',
+        'spin-slow':  'spin 2.5s linear infinite',
       },
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(8px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+          from: { opacity: '0' },
+          to:   { opacity: '1' },
         },
-        bounceDot: {
-          '0%, 80%, 100%': { transform: 'scale(0.6)', opacity: '0.4' },
-          '40%': { transform: 'scale(1)', opacity: '1' },
+        fadeUp: {
+          from: { opacity: '0', transform: 'translateY(12px)' },
+          to:   { opacity: '1', transform: 'translateY(0)' },
         },
+      },
+      boxShadow: {
+        'gold-sm': '0 0 0 1px rgba(245,158,11,0.25)',
+        'gold-md': '0 4px 24px rgba(245,158,11,0.12)',
+        'card':    '0 2px 16px rgba(0,0,0,0.35)',
       },
     },
   },

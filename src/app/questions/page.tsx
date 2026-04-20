@@ -41,18 +41,12 @@ export default function QuestionsPage() {
     setStep(1)
   }, [reset])
 
-  // Sync loading/results state from hook to step state
-  if (status === 'loading' && step !== 'loading') {
-    setStep('loading')
-  }
-  if (status === 'success' && data && step === 'loading') {
-    setStep('results')
-  }
+  // Sync hook status → step state
+  if (status === 'loading' && step !== 'loading') setStep('loading')
+  if (status === 'success' && data && step === 'loading') setStep('results')
   if (status === 'error' && step === 'loading') {
     setStep(3)
-    setFieldError(
-      errorType === 'rate_limit' ? t('errors.rateLimit') : t('errors.apiError')
-    )
+    setFieldError(errorType === 'rate_limit' ? t('errors.rateLimit') : t('errors.apiError'))
   }
 
   const questions = [
@@ -62,12 +56,14 @@ export default function QuestionsPage() {
   ]
 
   return (
-    <main className="relative min-h-screen flex flex-col">
-      <nav className="absolute top-0 end-0 p-5 z-10">
+    <main className="relative min-h-screen">
+      {/* Language toggle */}
+      <div className="fixed top-4 end-4 z-50">
         <LanguageToggle />
-      </nav>
+      </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center pt-20 pb-10">
+      {/* Content centred vertically */}
+      <div className="flex flex-col items-center justify-center min-h-screen pt-16 pb-10">
         {step === 'loading' && <LoadingScreen />}
 
         {step === 'results' && data && (
