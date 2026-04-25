@@ -3,16 +3,19 @@ import React from 'react'
 interface CardProps {
   children: React.ReactNode
   className?: string
-  glass?: boolean
+  variant?: 'default' | 'elevated' | 'teal' | 'peach'
 }
 
-export function Card({ children, className = '', glass = false }: CardProps) {
-  const base = glass
-    ? 'glass rounded-2xl shadow-card'
-    : 'rounded-2xl border border-white/8 bg-white/3 shadow-card'
+export function Card({ children, className = '', variant = 'default' }: CardProps) {
+  const variants = {
+    default:  'bg-white border border-ink-100 shadow-card',
+    elevated: 'bg-white border border-ink-100 shadow-card-lg',
+    teal:     'bg-teal-50 border border-teal-100',
+    peach:    'bg-peach-50 border border-peach-100',
+  }
 
   return (
-    <div className={`${base} ${className}`}>
+    <div className={`rounded-2xl ${variants[variant]} ${className}`}>
       {children}
     </div>
   )

@@ -3,59 +3,44 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --radius: 1rem;
-  }
-
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: #0b1120;
-    color: #f1f5f9;
+    /* Warm cream — easiest on the eyes for ADHD, reduces visual noise */
+    background-color: #f5f1ea;
+    color: #2c2825;
     font-family: var(--font-tajawal), var(--font-inter), system-ui, sans-serif;
     line-height: 1.85;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Switch to Inter for English sessions */
   [dir="ltr"] body {
     font-family: var(--font-inter), system-ui, sans-serif;
     line-height: 1.7;
   }
 
-  /* Comfortable Arabic text rendering */
   [dir="rtl"] body {
     font-family: var(--font-tajawal), system-ui, sans-serif;
     line-height: 1.9;
   }
 
   ::selection {
-    background-color: rgba(245, 158, 11, 0.25);
-    color: #fef3c7;
-  }
-
-  /* Smooth textarea */
-  textarea {
-    field-sizing: content;
+    background-color: rgba(63, 168, 152, 0.2);
+    color: #2c2825;
   }
 }
 
 @layer utilities {
-  /* ── Animations ────────────────────────────────────── */
-  .animate-fade-in {
-    animation: fadeIn 0.4s ease-out both;
-  }
-
+  /* ── Animations ──────────────────────────────────────── */
   .animate-fade-up {
-    animation: fadeUp 0.5s ease-out both;
+    animation: fadeUp 0.45s ease-out both;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  .animate-fade-in {
+    animation: fadeIn 0.35s ease-out both;
   }
 
   @keyframes fadeUp {
@@ -63,33 +48,32 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── Loading dots ──────────────────────────────────── */
-  .dot-1 { animation: bounceDot 1.4s infinite ease-in-out 0ms; }
-  .dot-2 { animation: bounceDot 1.4s infinite ease-in-out 180ms; }
-  .dot-3 { animation: bounceDot 1.4s infinite ease-in-out 360ms; }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── Stagger helpers ─────────────────────────────────── */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+
+  /* ── Loading dots ────────────────────────────────────── */
+  .dot-1 { animation: bounceDot 1.4s ease-in-out infinite 0ms; }
+  .dot-2 { animation: bounceDot 1.4s ease-in-out infinite 180ms; }
+  .dot-3 { animation: bounceDot 1.4s ease-in-out infinite 360ms; }
 
   @keyframes bounceDot {
-    0%, 80%, 100% { transform: scale(0.55); opacity: 0.35; }
+    0%, 80%, 100% { transform: scale(0.55); opacity: 0.3; }
     40%           { transform: scale(1);    opacity: 1; }
   }
 
-  /* ── Stagger helpers ───────────────────────────────── */
-  .delay-100 { animation-delay: 100ms; }
-  .delay-200 { animation-delay: 200ms; }
-  .delay-300 { animation-delay: 300ms; }
-
-  /* ── Glass card ────────────────────────────────────── */
-  .glass {
-    background: rgba(24, 32, 52, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  /* ── Spinner ring ──────────────────────────────────── */
-  .spinner-ring {
-    border: 3px solid rgba(245, 158, 11, 0.15);
-    border-top-color: #f59e0b;
+  /* ── Spinner ─────────────────────────────────────────── */
+  .spinner {
+    border: 3px solid rgba(63, 168, 152, 0.18);
+    border-top-color: #3fa898;
     border-radius: 9999px;
     animation: spin 0.9s linear infinite;
   }

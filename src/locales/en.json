@@ -1,11 +1,16 @@
 {
   "site": {
     "title": "Time Master Flow",
-    "taglineMain": "Your time. Your skills. Your future —",
-    "taglineSub": "powered by AI, not threatened by it.",
-    "description": "Answer three reflective questions and receive a personalized roadmap for your career and creativity.",
+    "taglineMain": "Your time. Your skills. Your future.",
+    "taglineSub": "Powered by AI — not threatened by it.",
+    "description": "Answer 3 reflective questions and get a personalized, step-by-step professional roadmap.",
     "cta": "Start Now",
     "language": "العربية"
+  },
+  "features": {
+    "creativity": "Discover creativity",
+    "goals": "Define your goal",
+    "ai": "Personal roadmap"
   },
   "progress": {
     "step": "Step {current} of {total}"
@@ -17,29 +22,30 @@
     },
     "q2": {
       "label": "What have you gained from your years of work?",
-      "placeholder": "Think about skills, insights, relationships, perspectives..."
+      "placeholder": "Think about skills, insights, relationships, hard-won lessons..."
     },
     "q3": {
       "label": "What outcome do you want to achieve?",
-      "placeholder": "Be specific — a job change, a business, a creative project..."
+      "placeholder": "Be specific — a career change, a business, a creative project..."
     }
   },
   "nav": {
     "next": "Next",
     "back": "Back",
-    "generate": "Generate My Roadmap",
+    "generate": "Build My Roadmap",
     "regenerate": "Regenerate",
     "startOver": "Start Over"
   },
   "loading": {
     "title": "Building your personalized roadmap...",
-    "message": "Every great journey begins with knowing yourself."
+    "message": "Every great journey starts with knowing yourself."
   },
   "results": {
-    "heading": "Your Professional Roadmap",
-    "stepsHeading": "Your Action Steps",
+    "heading": "Your Roadmap",
+    "stepsHeading": "Your Steps",
+    "microActionsLabel": "Start now",
     "youtubeHeading": "Videos to Watch",
-    "websitesHeading": "Tools and Websites",
+    "websitesHeading": "Tools & Websites",
     "closingHeading": "A Message for You"
   },
   "errors": {

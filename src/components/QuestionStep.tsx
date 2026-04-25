@@ -1,12 +1,19 @@
 'use client'
 
+import { Lightbulb, Award, Target, ChevronRight, ChevronLeft, Sparkles } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { ProgressBar } from './ProgressBar'
 import { Button } from './ui/Button'
-import { ChevronRight, ChevronLeft, Sparkles } from 'lucide-react'
+
+// Each question gets its own icon and accent color to aid focus
+const QUESTION_META = {
+  1: { Icon: Lightbulb, color: 'text-peach-500',  bg: 'bg-peach-50',  border: 'border-peach-200' },
+  2: { Icon: Award,     color: 'text-teal-500',   bg: 'bg-teal-50',   border: 'border-teal-200'  },
+  3: { Icon: Target,    color: 'text-ink-500',    bg: 'bg-ink-100/60', border: 'border-ink-200'  },
+} as const
 
 interface QuestionStepProps {
-  stepNumber: number
+  stepNumber: 1 | 2 | 3
   totalSteps: number
   question: string
   placeholder: string
@@ -32,22 +39,30 @@ export function QuestionStep({
 }: QuestionStepProps) {
   const { t, isRTL } = useLanguage()
   const isValid = value.trim().length >= 10
+  const { Icon, color, bg, border } = QUESTION_META[stepNumber]
 
   const BackIcon = isRTL ? ChevronRight : ChevronLeft
   const NextIcon = isRTL ? ChevronLeft : ChevronRight
 
   return (
-    <div className="animate-fade-up w-full max-w-xl mx-auto px-4 py-10 space-y-8">
+    <div className="animate-fade-up w-full max-w-xl mx-auto px-4 py-10 space-y-6">
 
       <ProgressBar current={stepNumber} total={totalSteps} />
 
       {/* Question card */}
-      <div className="glass rounded-2xl p-6 sm:p-8 space-y-6 shadow-card">
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-card-lg p-6 sm:p-8 space-y-6">
 
-        <h2 className="text-xl sm:text-2xl font-semibold text-white leading-snug">
+        {/* Question icon — gives each step a distinct visual identity */}
+        <div className={`w-14 h-14 rounded-2xl ${bg} ${border} border flex items-center justify-center`}>
+          <Icon size={26} className={color} />
+        </div>
+
+        {/* Question text */}
+        <h2 className="text-xl sm:text-2xl font-bold text-ink-900 leading-snug">
           {question}
         </h2>
 
+        {/* Textarea */}
         <div className="space-y-2">
           <textarea
             value={value}
@@ -56,22 +71,25 @@ export function QuestionStep({
             rows={5}
             className="
               w-full min-h-[130px] resize-none
-              bg-white/4 border border-white/10
-              hover:border-white/20 focus:border-gold-500/60
-              focus:outline-none focus:ring-0
-              rounded-xl px-4 py-3.5
-              text-white placeholder-white/25
+              bg-cream-100 border border-ink-100
+              hover:border-teal-300 focus:border-teal-400
+              focus:outline-none focus:ring-2 focus:ring-teal-400/20
+              rounded-2xl px-4 py-3.5
+              text-ink-900 placeholder-ink-300
               text-base leading-relaxed
-              transition-colors duration-200
+              transition-all duration-200
             "
           />
 
-          {/* Validation hints */}
+          {/* Inline hints — non-alarming text, not red */}
           {error && (
-            <p className="text-red-400/90 text-sm ps-1">{error}</p>
+            <p className="text-peach-600 text-sm ps-1 flex items-center gap-1.5">
+              <span className="w-1 h-1 rounded-full bg-peach-500 flex-shrink-0" />
+              {error}
+            </p>
           )}
           {!error && value.trim().length > 0 && value.trim().length < 10 && (
-            <p className="text-white/35 text-sm ps-1">{t('errors.minLength')}</p>
+            <p className="text-ink-300 text-sm ps-1">{t('errors.minLength')}</p>
           )}
         </div>
 

@@ -1,9 +1,10 @@
 'use client'
 
-import { ExternalLink, Play, RotateCcw, Home } from 'lucide-react'
+import { ExternalLink, Play, RotateCcw, Home, Clock, ChevronRight } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { Button } from './ui/Button'
-import type { RoadmapResponse } from '@/lib/types'
+import { Card } from './ui/Card'
+import type { RoadmapResponse, RoadmapStep } from '@/lib/types'
 
 interface ResultsViewProps {
   data: RoadmapResponse
@@ -11,56 +12,82 @@ interface ResultsViewProps {
   onStartOver: () => void
 }
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
+function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 mb-5">
-      <div className="w-1 h-5 rounded-full bg-gold-500 flex-shrink-0" />
-      <h2 className="text-base font-semibold text-gold-400 tracking-wide">{children}</h2>
+    <h2 className="text-sm font-bold text-ink-400 uppercase tracking-widest mb-4">
+      {children}
+    </h2>
+  )
+}
+
+function StepCard({ step, index, isRTL }: { step: RoadmapStep; index: number; isRTL: boolean }) {
+  return (
+    <div className="bg-white rounded-2xl border border-ink-100 shadow-card overflow-hidden animate-fade-up"
+         style={{ animationDelay: `${index * 80}ms` }}>
+
+      {/* Step header */}
+      <div className="flex items-start gap-4 p-5">
+        {/* Step number badge */}
+        <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center">
+          <span className="text-teal-600 font-bold text-sm tabular-nums">{index + 1}</span>
+        </div>
+
+        <div className="flex-1 min-w-0 space-y-1">
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <h3 className="font-bold text-ink-900 text-base leading-snug">{step.title}</h3>
+            {/* Duration pill */}
+            <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cream-200 text-ink-500 text-xs font-medium">
+              <Clock size={11} />
+              {step.duration}
+            </span>
+          </div>
+          <p className="text-sm text-ink-500 leading-relaxed">{step.description}</p>
+        </div>
+      </div>
+
+      {/* Micro-actions — the key ADHD-friendly feature */}
+      {step.micro_actions.length > 0 && (
+        <div className="border-t border-ink-100 bg-cream-100/60 px-5 py-4 space-y-2">
+          <p className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-3">
+            {isRTL ? 'ابدأ الآن' : 'Start now'}
+          </p>
+          {step.micro_actions.map((action, i) => (
+            <div key={i} className="flex items-start gap-2.5">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-teal-300 mt-0.5" />
+              <span className="text-sm text-ink-700 leading-relaxed">{action}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
 
 export function ResultsView({ data, onRegenerate, onStartOver }: ResultsViewProps) {
-  const { t } = useLanguage()
+  const { t, isRTL } = useLanguage()
 
   return (
-    <div className="animate-fade-up w-full max-w-xl mx-auto px-4 py-10 space-y-8">
-
-      {/* Heading */}
-      <div className="space-y-1 animate-fade-up">
-        <p className="text-xs text-gold-400/70 uppercase tracking-widest">{t('results.heading')}</p>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white leading-snug">
-          {data.summary.split('.')[0]}.
-        </h1>
-      </div>
+    <div className="animate-fade-in w-full max-w-xl mx-auto px-4 py-10 space-y-10">
 
       {/* Summary */}
-      <div className="glass rounded-2xl p-5 sm:p-6 shadow-card animate-fade-up delay-100">
-        <p className="text-white/75 leading-loose text-sm sm:text-base">{data.summary}</p>
-      </div>
+      <Card variant="teal" className="p-6">
+        <p className="text-ink-800 leading-loose text-base">{data.summary}</p>
+      </Card>
 
       {/* Action steps */}
-      <section className="animate-fade-up delay-200">
-        <SectionTitle>{t('results.stepsHeading')}</SectionTitle>
-        <ol className="space-y-3">
+      <section>
+        <SectionHeading>{t('results.stepsHeading')}</SectionHeading>
+        <div className="space-y-3">
           {data.steps.map((step, i) => (
-            <li
-              key={i}
-              className="flex gap-4 items-start p-4 rounded-xl bg-white/3 border border-white/7 hover:border-white/12 transition-colors"
-            >
-              <span className="flex-shrink-0 w-7 h-7 mt-0.5 rounded-lg bg-gold-500/12 border border-gold-500/25 flex items-center justify-center text-gold-400 font-semibold text-xs">
-                {i + 1}
-              </span>
-              <p className="text-white/75 leading-relaxed text-sm sm:text-base">{step}</p>
-            </li>
+            <StepCard key={i} step={step} index={i} isRTL={isRTL} />
           ))}
-        </ol>
+        </div>
       </section>
 
       {/* YouTube */}
       {data.resources.youtube.length > 0 && (
-        <section className="animate-fade-up delay-300">
-          <SectionTitle>{t('results.youtubeHeading')}</SectionTitle>
+        <section>
+          <SectionHeading>{t('results.youtubeHeading')}</SectionHeading>
           <div className="space-y-2">
             {data.resources.youtube.map((query, i) => (
               <a
@@ -68,15 +95,15 @@ export function ResultsView({ data, onRegenerate, onStartOver }: ResultsViewProp
                 href={`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3.5 rounded-xl border border-white/8 hover:border-gold-500/30 bg-white/2 hover:bg-white/4 transition-all group"
+                className="flex items-center gap-3 p-4 bg-white rounded-xl border border-ink-100 hover:border-teal-300 hover:shadow-card transition-all group"
               >
-                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center">
                   <Play size={13} className="text-red-400 fill-red-400" />
                 </div>
-                <span className="text-white/65 group-hover:text-white/90 text-sm transition-colors flex-1 leading-snug">
+                <span className="flex-1 text-sm text-ink-600 group-hover:text-ink-900 transition-colors leading-snug">
                   {query}
                 </span>
-                <ExternalLink size={13} className="text-white/25 group-hover:text-white/50 flex-shrink-0 transition-colors" />
+                <ExternalLink size={13} className="text-ink-200 group-hover:text-teal-400 flex-shrink-0 transition-colors" />
               </a>
             ))}
           </div>
@@ -85,8 +112,8 @@ export function ResultsView({ data, onRegenerate, onStartOver }: ResultsViewProp
 
       {/* Websites */}
       {data.resources.websites.length > 0 && (
-        <section className="animate-fade-up delay-300">
-          <SectionTitle>{t('results.websitesHeading')}</SectionTitle>
+        <section>
+          <SectionHeading>{t('results.websitesHeading')}</SectionHeading>
           <div className="space-y-2">
             {data.resources.websites.map((site, i) => (
               <a
@@ -94,15 +121,15 @@ export function ResultsView({ data, onRegenerate, onStartOver }: ResultsViewProp
                 href={site.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-3 p-4 rounded-xl border border-white/8 hover:border-gold-500/30 bg-white/2 hover:bg-white/4 transition-all group"
+                className="flex items-start gap-3 p-4 bg-white rounded-xl border border-ink-100 hover:border-teal-300 hover:shadow-card transition-all group"
               >
                 <div className="flex-1 min-w-0 space-y-0.5">
-                  <p className="text-white/90 font-medium text-sm group-hover:text-gold-300 transition-colors">
+                  <p className="text-sm font-semibold text-ink-900 group-hover:text-teal-600 transition-colors">
                     {site.name}
                   </p>
-                  <p className="text-white/45 text-xs leading-relaxed">{site.description}</p>
+                  <p className="text-xs text-ink-400 leading-relaxed">{site.description}</p>
                 </div>
-                <ExternalLink size={13} className="text-white/25 group-hover:text-white/50 flex-shrink-0 mt-1 transition-colors" />
+                <ExternalLink size={13} className="text-ink-200 group-hover:text-teal-400 flex-shrink-0 mt-1 transition-colors" />
               </a>
             ))}
           </div>
@@ -110,20 +137,20 @@ export function ResultsView({ data, onRegenerate, onStartOver }: ResultsViewProp
       )}
 
       {/* Closing */}
-      <div className="rounded-2xl p-5 sm:p-6 border border-gold-500/20 bg-gradient-to-br from-gold-500/6 via-transparent to-transparent animate-fade-up delay-300">
-        <p className="text-xs font-medium text-gold-400/70 uppercase tracking-widest mb-3">
+      <Card variant="peach" className="p-6">
+        <p className="text-xs font-bold text-peach-600 uppercase tracking-widest mb-3">
           {t('results.closingHeading')}
         </p>
-        <p className="text-white/80 leading-loose text-sm sm:text-base italic">{data.closing}</p>
-      </div>
+        <p className="text-ink-800 leading-loose text-base">{data.closing}</p>
+      </Card>
 
-      {/* Actions */}
-      <div className="flex flex-wrap items-center gap-3 pt-1 animate-fade-up delay-300">
+      {/* Action buttons */}
+      <div className="flex flex-wrap items-center gap-3">
         <Button variant="primary" size="md" onClick={onRegenerate}>
           <RotateCcw size={15} />
           {t('nav.regenerate')}
         </Button>
-        <Button variant="ghost" size="md" onClick={onStartOver}>
+        <Button variant="outline" size="md" onClick={onStartOver}>
           <Home size={15} />
           {t('nav.startOver')}
         </Button>

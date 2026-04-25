@@ -12,11 +12,11 @@ export function LanguageToggle() {
       aria-label="Switch language"
       className="
         inline-flex items-center gap-2 px-3.5 py-2 rounded-xl
-        text-sm font-medium text-white/60
-        border border-white/10
-        hover:border-gold-500/40 hover:text-gold-400
+        text-sm font-medium text-ink-500
+        bg-white border border-ink-100 shadow-card
+        hover:border-teal-300 hover:text-teal-600
         transition-all duration-200
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/40
       "
     >
       <Globe2 size={15} />
